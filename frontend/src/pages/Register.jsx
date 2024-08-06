@@ -1,7 +1,8 @@
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import Form from "../components/Form";
-import ReactHookForm from "../components/ReactHookForm";
+// import ReactHookForm from "../components/ReactHookForm";
+import ReactHookFormZod from "../components/ReactHookFormZod";
 
 const Register = () => {
   // const navigate = useNavigate();
@@ -12,7 +13,8 @@ const Register = () => {
   return (
     <div>
       {/* <Form page={"contact"} /> */}
-      <ReactHookForm />
+      {/* <ReactHookForm /> */}
+      <ReactHookFormZod />
     </div>
   );
 };
