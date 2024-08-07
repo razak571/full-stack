@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegisterData } from "../redux/slices/authSlice";
 import { useEffect } from "react";
+import { useCreateUserMutation } from "../redux/api/services/users";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z
   .object({
@@ -22,6 +24,8 @@ const formSchema = z
 const ReactHookFormZod = () => {
   const dispatch = useDispatch();
   const { userinfo, status } = useSelector((state) => state.auth);
+  const [createUser] = useCreateUserMutation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -38,9 +42,9 @@ const ReactHookFormZod = () => {
   });
 
   const userRegister = async (data) => {
-    console.log("data :: ", data);
-    const res = data;
+    const res = await createUser(data).unwrap();
     dispatch(userRegisterData(res));
+    navigate("/");
   };
 
   useEffect(() => {
