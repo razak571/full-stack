@@ -5,7 +5,7 @@ const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (data) => ({
-        url: `${USER}/register`,
+        url: `${USER}`,
         method: "POST",
         body: data,
       }),
