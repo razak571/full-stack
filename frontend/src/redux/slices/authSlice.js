@@ -13,9 +13,13 @@ const authSlice = createSlice({
       state.userinfo = action.payload;
       state.status = true;
     },
+    userLoginData: (state, action) => {
+      state.userinfo = action.payload;
+      state.status = true;
+    },
   },
 });
 
-export const { userRegisterData } = authSlice.actions;
+export const { userRegisterData, userLoginData } = authSlice.actions;
 
 export default authSlice.reducer;

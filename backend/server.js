@@ -6,7 +6,6 @@ import cors from "cors";
 
 const PORT = process.env.PORT;
 const frontEndUrl = process.env.FRONTEND_URI;
-console.log("frontEndUrl :  :", frontEndUrl);
 
 const app = express();
 
