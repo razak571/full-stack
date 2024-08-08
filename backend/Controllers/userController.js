@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import userModel from "../Models/userModel.js";
 
 const createUser = async (req, res) => {
@@ -21,4 +20,30 @@ const createUser = async (req, res) => {
   res.status(201).json({ success: true, data: user });
 };
 
-export { createUser };
+const loginUser = async (req, res) => {
+  const { email, password, confirmPassword } = req.body;
+
+  if (!email || !password || !confirmPassword) {
+    res.status(400).send("All filds are required");
+    throw new Error("Missing Fields");
+  }
+
+  try {
+    const existingUser = await userModel.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).json({
+      data: {
+        _id: existingUser._id,
+        fullname: existingUser.fullname,
+        email: existingUser.email,
+      },
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};
+export { createUser, loginUser };

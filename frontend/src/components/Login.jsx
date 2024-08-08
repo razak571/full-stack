@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginUserMutation } from "../redux/api/services/users";
+import { useDispatch } from "react-redux";
+import { userLoginData } from "../redux/slices/authSlice";
 
 const loginShema = z
   .object({
@@ -29,19 +31,22 @@ const Login = () => {
     },
     resolver: zodResolver(loginShema),
   });
+  const dispatch = useDispatch();
 
   const [loginUser] = useLoginUserMutation();
-  const handleLogin = (data) => {
-    const res = loginUser(data).unwrap();
-    console.log("res : : ", res);
+  const handleLogin = async (data) => {
+    const res = await loginUser(data).unwrap();
+    dispatch(userLoginData(res));
   };
   return (
     <div className="flex justify-center  mt-20">
       <form onSubmit={handleSubmit(handleLogin)}>
         <div>
           <div>
-            <label>Email:</label>
+            <label htmlFor="email">Email:</label>
             <input
+              id="email"
+              autoComplete="off"
               type="email"
               placeholder="Enter email"
               {...register("email")}
@@ -52,8 +57,9 @@ const Login = () => {
             )}
           </div>
           <div>
-            <label htmlFor="">Enter Password:</label>
+            <label htmlFor="pass">Enter Password:</label>
             <input
+              id="pass"
               type="password"
               placeholder="Enter Password"
               {...register("password")}
@@ -64,8 +70,9 @@ const Login = () => {
             )}
           </div>
           <div>
-            <label htmlFor="">Confirm Password:</label>
+            <label htmlFor="cpass">Confirm Password:</label>
             <input
+              id="cpass"
               type="password"
               placeholder="Confirm Password"
               {...register("confirmPassword")}
