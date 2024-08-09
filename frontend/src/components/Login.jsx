@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginUserMutation } from "../redux/api/services/users";
 import { useDispatch } from "react-redux";
 import { userLoginData } from "../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const loginShema = z
   .object({
@@ -32,11 +33,13 @@ const Login = () => {
     resolver: zodResolver(loginShema),
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loginUser] = useLoginUserMutation();
   const handleLogin = async (data) => {
     const res = await loginUser(data).unwrap();
     dispatch(userLoginData(res));
+    navigate("/");
   };
   return (
     <div className="flex justify-center  mt-20">
@@ -46,7 +49,7 @@ const Login = () => {
             <label htmlFor="email">Email:</label>
             <input
               id="email"
-              autoComplete="off"
+              autoComplete="on"
               type="email"
               placeholder="Enter email"
               {...register("email")}
@@ -62,6 +65,7 @@ const Login = () => {
               id="pass"
               type="password"
               placeholder="Enter Password"
+              autoComplete="off"
               {...register("password")}
               className="ml-2"
             />
@@ -75,6 +79,7 @@ const Login = () => {
               id="cpass"
               type="password"
               placeholder="Confirm Password"
+              autoComplete="off"
               {...register("confirmPassword")}
               className="ml-2"
             />

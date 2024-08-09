@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Toggle from "./Toggle";
 
 const Navigation = () => {
   return (
@@ -22,6 +23,7 @@ const Navigation = () => {
         <Link className="hover:text-gray-500  " to="/login">
           Login
         </Link>
+        <Toggle />
       </div>
       <div className="flex-grow"></div>
     </div>
