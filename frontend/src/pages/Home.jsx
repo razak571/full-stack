@@ -7,7 +7,7 @@
 import PostList from "../components/hoc/components/PostList";
 import UserList from "../components/hoc/components/UserList";
 // import UseRefHook from "../components/ReactHooks/UseRefHook";
-import { withDataFetching } from "../components/hoc/withDataFetching";
+import withDataFetching from "../components/hoc/withDataFetching";
 
 // Igonre the code, this is just for practice
 
@@ -41,7 +41,6 @@ const Home = () => {
     // </div>
     <div className="text-white">
       <UsersWithFetching />
-      <hr />
       <PostsWithFetching />
     </div>
   );
