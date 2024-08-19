@@ -9,6 +9,7 @@ import UserList from "../components/hoc/components/UserList";
 // import UseRefHook from "../components/ReactHooks/UseRefHook";
 import withDataFetching from "../components/hoc/withDataFetching";
 import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
+import Test from "../components/Test";
 
 // Igonre the code, this is just for practice
 
@@ -54,8 +55,9 @@ const Home = () => {
     <div className="text-white">
       {/* <UsersWithFetching />
       <PostsWithFetching /> */}
-      <UsersWithRQFetching />
-      <PostsWithRQFetching />
+      {/* <UsersWithRQFetching />
+      <PostsWithRQFetching /> */}
+      <Test />
     </div>
   );
 };
