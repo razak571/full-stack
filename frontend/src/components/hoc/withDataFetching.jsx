@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export function withDataFetching(WrappedComponent, url) {
+function withDataFetching(WrappedComponent, url) {
   return function DataFetchingComponent(props) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -23,13 +23,13 @@ export function withDataFetching(WrappedComponent, url) {
       }
 
       fetchData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [url]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) return <div> Loading... </div>;
+    if (error) return <div> Error: {error} </div>;
 
-    // Pass the fetched data as props to the wrapped component
     return <WrappedComponent data={data} {...props} />;
   };
 }
+
+export default withDataFetching;
