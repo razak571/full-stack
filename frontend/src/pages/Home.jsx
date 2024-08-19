@@ -8,6 +8,7 @@ import PostList from "../components/hoc/components/PostList";
 import UserList from "../components/hoc/components/UserList";
 // import UseRefHook from "../components/ReactHooks/UseRefHook";
 import withDataFetching from "../components/hoc/withDataFetching";
+import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
 
 // Igonre the code, this is just for practice
 
@@ -18,6 +19,17 @@ const UsersWithFetching = withDataFetching(
 const PostsWithFetching = withDataFetching(
   PostList,
   "https://jsonplaceholder.typicode.com/posts?_limit=8"
+);
+
+const UsersWithRQFetching = reactQueryDataFetchHOC(
+  UserList,
+  "https://jsonplaceholder.typicode.com/users",
+  "usersList"
+);
+const PostsWithRQFetching = reactQueryDataFetchHOC(
+  PostList,
+  "https://jsonplaceholder.typicode.com/posts?_limit=8",
+  "postList"
 );
 
 const Home = () => {
@@ -40,8 +52,10 @@ const Home = () => {
 
     // </div>
     <div className="text-white">
-      <UsersWithFetching />
-      <PostsWithFetching />
+      {/* <UsersWithFetching />
+      <PostsWithFetching /> */}
+      <UsersWithRQFetching />
+      <PostsWithRQFetching />
     </div>
   );
 };
