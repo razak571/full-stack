@@ -12,14 +12,12 @@ const Test = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name");
-    console.log(name);
     const password = formData.get("password");
 
     const userData = {
       name: name,
       password: password,
     };
-    console.log(userData);
     mutation.mutate(userData);
   };
 

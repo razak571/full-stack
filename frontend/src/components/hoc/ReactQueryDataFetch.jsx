@@ -3,7 +3,7 @@ import axios from "axios";
 import Skeleton from "@cristata/react-skeleton-loader";
 
 const ReactQueryDataFetch = (WrappedComponent, url, key) => {
-  console.log(key);
+  // console.log(key);
   return function DataFetchingComponent(props) {
     const { data, isPending, isError, error } = useQuery({
       queryKey: [key],

@@ -17,14 +17,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 10000,
-    },
-    // mutations: {
-
-    // }
-  },
+  // defaultOptions: {
+  //   queries: {
+  //     staleTime: 3000,
+  //   },
+  //   // mutations: {
+  //   // }
+  // },
 });
 
 const router = createBrowserRouter(
