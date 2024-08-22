@@ -10,6 +10,7 @@ import UserList from "../components/hoc/components/UserList";
 import withDataFetching from "../components/hoc/withDataFetching";
 import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
 import Test from "../components/Test";
+import ReactQueryCRUD from "../components/ReactQueryCRUD";
 
 // Igonre the code, this is just for practice
 
@@ -52,12 +53,13 @@ const Home = () => {
     //   {/* <UseRefHook /> */}
 
     // </div>
-    <div className="text-white">
+    <div className="">
       {/* <UsersWithFetching />
       <PostsWithFetching /> */}
       {/* <UsersWithRQFetching />
       <PostsWithRQFetching /> */}
-      <Test />
+      {/* <Test /> */}
+      <ReactQueryCRUD />
     </div>
   );
 };
