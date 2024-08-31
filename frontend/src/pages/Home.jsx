@@ -11,6 +11,11 @@ import withDataFetching from "../components/hoc/withDataFetching";
 import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
 import Test from "../components/Test";
 import ReactQueryCRUD from "../components/ReactQueryCRUD";
+// import LazyLoading from "../components/LazyLoading";
+import React, { Suspense } from "react";
+const Lazy = React.lazy(() => import("../components/LazyLoading"));
+import Noraml from "../components/Noraml";
+import ReactQuery from "./ReactQuery";
 
 // Igonre the code, this is just for practice
 
@@ -59,7 +64,12 @@ const Home = () => {
       {/* <UsersWithRQFetching />
       <PostsWithRQFetching /> */}
       {/* <Test /> */}
-      <ReactQueryCRUD />
+      {/* <ReactQueryCRUD /> */}
+      {/* <Noraml />
+      <Suspense fallback={<div>Loading Data...</div>}>
+        <Lazy />
+      </Suspense> */}
+      <ReactQuery />
     </div>
   );
 };
