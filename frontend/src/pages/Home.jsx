@@ -16,6 +16,7 @@ import React, { Suspense } from "react";
 const Lazy = React.lazy(() => import("../components/LazyLoading"));
 import Noraml from "../components/Noraml";
 import ReactQuery from "./ReactQuery";
+import ReactQueryCasheBackgroundSync from "../components/ReactQueryCasheBackgroundSync";
 
 // Igonre the code, this is just for practice
 
@@ -69,7 +70,8 @@ const Home = () => {
       <Suspense fallback={<div>Loading Data...</div>}>
         <Lazy />
       </Suspense> */}
-      <ReactQuery />
+      {/* <ReactQuery /> */}
+      <ReactQueryCasheBackgroundSync />
     </div>
   );
 };
