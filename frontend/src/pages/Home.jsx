@@ -17,6 +17,7 @@ const Lazy = React.lazy(() => import("../components/LazyLoading"));
 import Noraml from "../components/Noraml";
 import ReactQuery from "./ReactQuery";
 import ReactQueryCasheBackgroundSync from "../components/ReactQueryCasheBackgroundSync";
+import ReactQueryOptimisticUpdates from "../components/ReactQueryOptimisticUpdates";
 
 // Igonre the code, this is just for practice
 
@@ -71,7 +72,8 @@ const Home = () => {
         <Lazy />
       </Suspense> */}
       {/* <ReactQuery /> */}
-      <ReactQueryCasheBackgroundSync />
+      {/* <ReactQueryCasheBackgroundSync /> */}
+      <ReactQueryOptimisticUpdates />
     </div>
   );
 };
