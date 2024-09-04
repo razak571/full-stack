@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -8,6 +8,11 @@ const fetchPosts = async () => {
     "https://jsonplaceholder.typicode.com/posts"
   );
   return data;
+};
+
+const createPost = async (data) => {
+  console.log(data);
+  await axios.post("https://jsonplaceholder.typicode.com/posts", data);
 };
 
 const ReactQueryCasheBackgroundSync = () => {
@@ -27,6 +32,12 @@ const ReactQueryCasheBackgroundSync = () => {
     refetchOnWindowFocus: false,
   });
 
+  const { mutate } = useMutation({
+    mutationFn: (data) => {
+      createPost(data);
+    },
+  });
+
   if (isError)
     return <div className="text-red-500">Error : : {error.message} </div>;
 
@@ -37,6 +48,12 @@ const ReactQueryCasheBackgroundSync = () => {
         className="bg-blue-800 p-5 rounded-lg m-5 text-white hover:bg-blue-900"
       >
         Refetch Data
+      </button>
+      <button
+        onClick={() => mutate({ name: "razak", age: 26 })}
+        className="bg-blue-900 p-5 rounded-lg m-5 text-white hover:bg-blue-800"
+      >
+        Create Post
       </button>
       <p>Data last updated: {new Date(dataUpdatedAt).toLocaleTimeString()}</p>
       <Link to="/about">About</Link>
