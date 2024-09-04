@@ -18,6 +18,7 @@ import Noraml from "../components/Noraml";
 import ReactQuery from "./ReactQuery";
 import ReactQueryCasheBackgroundSync from "../components/ReactQueryCasheBackgroundSync";
 import ReactQueryOptimisticUpdates from "../components/ReactQueryOptimisticUpdates";
+import ReactQueryDeduplicate from "../components/ReactQueryDeduplicate";
 
 // Igonre the code, this is just for practice
 
@@ -73,7 +74,8 @@ const Home = () => {
       </Suspense> */}
       {/* <ReactQuery /> */}
       {/* <ReactQueryCasheBackgroundSync /> */}
-      <ReactQueryOptimisticUpdates />
+      {/* <ReactQueryOptimisticUpdates /> */}
+      <ReactQueryDeduplicate />
     </div>
   );
 };
