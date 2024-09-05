@@ -21,6 +21,7 @@ import ReactQueryOptimisticUpdates from "../components/ReactQueryOptimisticUpdat
 import ReactQueryDeduplicate from "../components/ReactQueryDeduplicate";
 import ReactQueryParallelQueries from "../components/ReactQueryParallelQueries";
 import PaginatedProducts from "../components/PaginatedProducts ";
+import InfiniteScrollProducts from "../components/ReactQueryInfiniteScrollProducts";
 
 // Igonre the code, this is just for practice
 
@@ -79,7 +80,8 @@ const Home = () => {
       {/* <ReactQueryOptimisticUpdates /> */}
       {/* <ReactQueryDeduplicate /> */}
       {/* <ReactQueryParallelQueries /> */}
-      <PaginatedProducts />
+      {/* <PaginatedProducts /> */}
+      <InfiniteScrollProducts />
     </div>
   );
 };
