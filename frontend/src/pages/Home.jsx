@@ -19,6 +19,8 @@ import ReactQuery from "./ReactQuery";
 import ReactQueryCasheBackgroundSync from "../components/ReactQueryCasheBackgroundSync";
 import ReactQueryOptimisticUpdates from "../components/ReactQueryOptimisticUpdates";
 import ReactQueryDeduplicate from "../components/ReactQueryDeduplicate";
+import ReactQueryParallelQueries from "../components/ReactQueryParallelQueries";
+import PaginatedProducts from "../components/PaginatedProducts ";
 
 // Igonre the code, this is just for practice
 
@@ -75,7 +77,9 @@ const Home = () => {
       {/* <ReactQuery /> */}
       {/* <ReactQueryCasheBackgroundSync /> */}
       {/* <ReactQueryOptimisticUpdates /> */}
-      <ReactQueryDeduplicate />
+      {/* <ReactQueryDeduplicate /> */}
+      {/* <ReactQueryParallelQueries /> */}
+      <PaginatedProducts />
     </div>
   );
 };
