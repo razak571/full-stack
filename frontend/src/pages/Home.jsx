@@ -22,6 +22,7 @@ import ReactQueryDeduplicate from "../components/ReactQueryDeduplicate";
 import ReactQueryParallelQueries from "../components/ReactQueryParallelQueries";
 import PaginatedProducts from "../components/PaginatedProducts ";
 import InfiniteScrollProducts from "../components/ReactQueryInfiniteScrollProducts";
+import ReactQueryInfiniteScrollProductsAuto from "../components/ReactQueryInfiniteScrollProductsAuto";
 
 // Igonre the code, this is just for practice
 
@@ -81,7 +82,8 @@ const Home = () => {
       {/* <ReactQueryDeduplicate /> */}
       {/* <ReactQueryParallelQueries /> */}
       {/* <PaginatedProducts /> */}
-      <InfiniteScrollProducts />
+      {/* <InfiniteScrollProducts /> */}
+      <ReactQueryInfiniteScrollProductsAuto />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import axios from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -8,29 +8,43 @@ const fetchProducts = async ({ pageParam = 0 }) => {
   const { data } = await axios.get(
     `https://dummyjson.com/products?limit=${limit}&skip=${pageParam}`
   );
-  console.log(data);
   return data;
 };
 
-const InfiniteScrollProducts = () => {
+const ReactQueryInfiniteScrollProductsAuto = () => {
   const {
     data,
     error,
-    fetchNextPage, // function to fetch next page data
+    fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isFetching,
     status,
   } = useInfiniteQuery({
-    // Here we need useInfiniteQuery instead useQuery
     queryKey: ["products"],
     queryFn: fetchProducts,
-    initialPageParam: 0, // 1st thing we need is initialPageParam and pageParam
+    initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      const totalFetchedItems = allPages.length * 10; // Calculate how many items are fetched
+      const totalFetchedItems = allPages.length * 10;
       return totalFetchedItems < lastPage.total ? totalFetchedItems : undefined;
     },
   });
+
+  const loadMoreButtonRef = useRef();
+
+  useEffect(() => {
+    if (!loadMoreButtonRef.current || !hasNextPage) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        fetchNextPage();
+      }
+    });
+
+    observer.observe(loadMoreButtonRef.current);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
 
   if (status === "loading") return <div>Loading...</div>;
   if (status === "error") return <div>Error: {error.message}</div>;
@@ -39,8 +53,7 @@ const InfiniteScrollProducts = () => {
     <div>
       <h1>Products</h1>
       <ul>
-        {/* {JSON.stringify(data)} */}
-        {data?.pages?.map((page, pageIndex) => (
+        {data?.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
             {page.products.map((product) => (
               <li key={product.id}>{product.title}</li>
@@ -50,6 +63,7 @@ const InfiniteScrollProducts = () => {
       </ul>
       <div>
         <button
+          ref={loadMoreButtonRef}
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
         >
@@ -65,4 +79,4 @@ const InfiniteScrollProducts = () => {
   );
 };
 
-export default InfiniteScrollProducts;
+export default ReactQueryInfiniteScrollProductsAuto;
