@@ -11,28 +11,29 @@ import withDataFetching from "../components/hoc/withDataFetching";
 import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
 import Test from "../components/Test";
 import ReactQueryCRUD from "../components/ReactQueryCRUD";
+import Todo from "../components/Todo";
 
 // Igonre the code, this is just for practice
 
-const UsersWithFetching = withDataFetching(
-  UserList,
-  "https://jsonplaceholder.typicode.com/users"
-);
-const PostsWithFetching = withDataFetching(
-  PostList,
-  "https://jsonplaceholder.typicode.com/posts?_limit=8"
-);
+// const UsersWithFetching = withDataFetching(
+//   UserList,
+//   "https://jsonplaceholder.typicode.com/users"
+// );
+// const PostsWithFetching = withDataFetching(
+//   PostList,
+//   "https://jsonplaceholder.typicode.com/posts?_limit=8"
+// );
 
-const UsersWithRQFetching = reactQueryDataFetchHOC(
-  UserList,
-  "https://jsonplaceholder.typicode.com/users",
-  "usersList"
-);
-const PostsWithRQFetching = reactQueryDataFetchHOC(
-  PostList,
-  "https://jsonplaceholder.typicode.com/posts?_limit=8",
-  "postList"
-);
+// const UsersWithRQFetching = reactQueryDataFetchHOC(
+//   UserList,
+//   "https://jsonplaceholder.typicode.com/users",
+//   "usersList"
+// );
+// const PostsWithRQFetching = reactQueryDataFetchHOC(
+//   PostList,
+//   "https://jsonplaceholder.typicode.com/posts?_limit=8",
+//   "postList"
+// );
 
 const Home = () => {
   return (
@@ -59,7 +60,8 @@ const Home = () => {
       {/* <UsersWithRQFetching />
       <PostsWithRQFetching /> */}
       {/* <Test /> */}
-      <ReactQueryCRUD />
+      {/* <ReactQueryCRUD /> */}
+      <Todo />
     </div>
   );
 };
