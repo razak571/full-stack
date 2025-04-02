@@ -12,6 +12,7 @@ import reactQueryDataFetchHOC from "../components/hoc/ReactQueryDataFetch";
 import Test from "../components/Test";
 import ReactQueryCRUD from "../components/ReactQueryCRUD";
 import Todo from "../components/Todo";
+import TodoTest from "../components/TodoTest";
 
 // Igonre the code, this is just for practice
 
@@ -61,7 +62,8 @@ const Home = () => {
       <PostsWithRQFetching /> */}
       {/* <Test /> */}
       {/* <ReactQueryCRUD /> */}
-      <Todo />
+      {/* <Todo /> */}
+      <TodoTest />
     </div>
   );
 };

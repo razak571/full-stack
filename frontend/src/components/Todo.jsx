@@ -10,11 +10,13 @@ const Todo = () => {
       id: 1,
       name: "task 1",
       done: true,
+      edit: false,
     },
     {
       id: 2,
       name: "task 2",
       done: false,
+      edit: false,
     },
   ]);
 
@@ -53,6 +55,18 @@ const Todo = () => {
     );
   };
 
+  //   const [edit, setEdit] = useState(false);
+  const editTask = (id) => {
+    // alert(id);
+    const taskTobeEdited = tasks.filter((task) => task.id === id);
+    // console.log(taskTobeEdited);
+    for (const key of taskTobeEdited) {
+      console.log("before", key);
+      setTasks([...tasks, !key.edit]);
+      console.log("toggle", key);
+    }
+  };
+
   return (
     <>
       <input type="input" placeholder="add task" ref={inputRef} />
@@ -62,7 +76,13 @@ const Todo = () => {
           <>
             <li key={task.id} style={{ listStyle: "none" }}>
               {!task.done ? (
-                <span style={{ textDecoration: "none" }}>{task.name}</span>
+                <span style={{ textDecoration: "none" }}>
+                  {task.edit ? (
+                    <input type="input" value={task.name} />
+                  ) : (
+                    task.name
+                  )}
+                </span>
               ) : (
                 <span
                   style={{ textDecoration: "line-through", opacity: "0.5" }}
@@ -85,6 +105,16 @@ const Todo = () => {
               </button>
               <button onClick={() => markeDone(task.id)}>
                 {!task.done ? "done" : "un-done"}
+              </button>
+              <button
+                style={{
+                  border: "1px solid",
+                  borderRadius: "2px",
+                  padding: "5px",
+                }}
+                onClick={() => editTask(task.id)}
+              >
+                edit task
               </button>
             </li>
           </>
