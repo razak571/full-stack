@@ -16,41 +16,47 @@ const TodoTest = () => {
     },
   ]);
 
-  const todoRef = useRef();
+  const taskRef = useRef();
 
-  const [edit, setEditTask] = useState();
+  const [edit, setEdit] = useState();
 
-  const addNewTask = () => {
+  const [filter, setFilter] = useState("all");
+
+  const filteredTasks = tasks.map((task) => {
+    if (filter === "completed") return task.done;
+    if (filter === "pending") return !task.done;
+    return true;
+  });
+
+  console.log(filteredTasks);
+
+  const createTask = () => {
     const newTask = {
       id: Date.now(),
-      name: todoRef.current.value,
+      name: taskRef.current.value,
       done: false,
       edit: false,
     };
-
     setTasks([...tasks, newTask]);
-    todoRef.current.value = "";
+    taskRef.current.value = "";
     localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
   };
 
   useEffect(() => {
-    // console.log(JSON.parse(localStorage.getItem("tasks")).length);
     if (JSON.parse(localStorage.getItem("tasks"))) {
-      //   alert("if");
       setTasks(JSON.parse(localStorage.getItem("tasks")));
     } else {
-      //   alert("else");
       setTasks(tasks);
     }
   }, []);
 
-  const taskDone = (id) => {
+  const doneTask = (id) => {
+    // alert("he");
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, done: !task.done } : task
       )
     );
-
     localStorage.setItem(
       "tasks",
       JSON.stringify(
@@ -61,9 +67,8 @@ const TodoTest = () => {
     );
   };
 
-  const deleteDone = (id) => {
+  const deleteTask = (id) => {
     const filteredTasks = tasks.filter((task) => task.id !== id);
-
     setTasks(filteredTasks);
     localStorage.setItem("tasks", JSON.stringify(filteredTasks));
   };
@@ -72,29 +77,86 @@ const TodoTest = () => {
     setTasks(
       tasks.map((task) => (task.id === id ? { ...task, edit: true } : task))
     );
-
-    setEditTask(name);
+    setEdit(name);
   };
 
   const saveTask = (id) => {
     const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, name: edit, edit: false } : task
+      task.id === id ? { ...task, edit: false, name: edit } : task
     );
 
     setTasks(updatedTasks);
-
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setEditTask(""); // ✅ Clear input field after saving
   };
 
+  //   const allTasks = () => {
+  //     const allTasks = JSON.parse(localStorage.getItem("tasks"));
+  //     setTasks(allTasks);
+  //   };
+
+  //   const doneTasks = () => {
+  //     const allTasks = JSON.parse(localStorage.getItem("tasks"));
+  //     const filteredDoneTasks = allTasks.filter((task) => task.done === true);
+  //     console.log(filteredDoneTasks);
+  //     if (filteredDoneTasks.length !== 0) {
+  //       setTasks(filteredDoneTasks);
+  //     } else {
+  //       setTasks([]);
+  //     }
+  //   };
+
+  //   const pendingTasks = () => {
+  //     const allTasks = JSON.parse(localStorage.getItem("tasks"));
+  //     const filteredpendingTasks = allTasks.filter((task) => task.done === false);
+  //     setTasks(filteredpendingTasks);
+  //   };
   return (
     <>
-      <input placeholder="add new task" type="text" ref={todoRef} />
-      <button onClick={() => addNewTask()}>add task</button>
+      <input placeholder="add task" type="text" ref={taskRef} />
+      <button onClick={() => createTask()}>add task</button>
+      <br />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "center",
+        }}
+      >
+        <button
+          style={{ border: "1px solid", margin: "10px", padding: "2px" }}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+        <button
+          style={{ border: "1px solid", margin: "10px", padding: "2px" }}
+          onClick={() => setFilter("completed")}
+        >
+          Completed
+        </button>
+        <button
+          style={{ border: "1px solid", margin: "10px", padding: "2px" }}
+          onClick={() => setFilter("pending")}
+        >
+          Pending
+        </button>
+      </div>
       <ul>
-        {tasks?.map((task) => (
-          <li key={task?.id}>
-            {task?.done === true ? (
+        {filteredTasks.map((task) => (
+          <li key={task.id}>
+            {task.done === false ? (
+              <span>
+                {" "}
+                {task.edit === true ? (
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                  />
+                ) : (
+                  task.name
+                )}{" "}
+              </span>
+            ) : (
               <span
                 style={{
                   color: "red",
@@ -102,41 +164,39 @@ const TodoTest = () => {
                   textDecoration: "line-through",
                 }}
               >
-                {task.name}
+                {task.edit === true ? (
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                  />
+                ) : (
+                  task.name
+                )}
               </span>
-            ) : //   <span key={task.id}>{task.name}</span>
-            task?.edit === true ? (
-              <input
-                value={edit}
-                onChange={(e) => setEditTask(e.target.value)}
-              />
-            ) : (
-              task?.name
             )}
             <button
-              onClick={() => taskDone(task.id)}
-              style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+              style={{ margin: "2px", padding: "2px", border: "1px solid" }}
+              onClick={() => doneTask(task.id)}
             >
-              done
+              {task.done === false ? "done" : "undone"}
             </button>
             <button
-              onClick={() => deleteDone(task.id)}
-              style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+              style={{ margin: "2px", padding: "2px", border: "1px solid" }}
+              onClick={() => deleteTask(task.id)}
             >
               delete
             </button>
-
             {task.edit === false ? (
               <button
-                onClick={() => editTask(task?.id, task?.name)}
-                style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+                style={{ margin: "2px", padding: "2px", border: "1px solid" }}
+                onClick={() => editTask(task.id, task.name)}
               >
                 edit
               </button>
             ) : (
               <button
+                style={{ margin: "2px", padding: "2px", border: "1px solid" }}
                 onClick={() => saveTask(task.id)}
-                style={{ border: "1px solid", padding: "2px", margin: "2px" }}
               >
                 save
               </button>
