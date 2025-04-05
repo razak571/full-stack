@@ -4,33 +4,32 @@ const TodoTest = () => {
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      name: "React",
+      name: "react",
       done: false,
       edit: false,
     },
     {
       id: 2,
-      name: "Node",
+      name: "node",
       done: false,
       edit: false,
     },
   ]);
 
-  const todoRef = useRef();
-  const [edit, setEditTask] = useState();
-  const [filter, setFilter] = useState("all");
+  const taskRef = useRef();
 
-  const addNewTask = () => {
+  const createTask = () => {
     const newTask = {
       id: Date.now(),
-      name: todoRef.current.value,
+      name: taskRef.current.value,
       done: false,
       edit: false,
     };
 
     setTasks([...tasks, newTask]);
-    todoRef.current.value = "";
+
     localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
+    taskRef.current.value = "";
   };
 
   useEffect(() => {
@@ -41,38 +40,27 @@ const TodoTest = () => {
     }
   }, []);
 
-  const taskDone = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
+  const doneTask = (id) => {
+    const filteredTasks = tasks.map((task) =>
+      task.id === id ? { ...task, done: !task.done } : task
     );
-
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(
-        tasks.map((task) =>
-          task.id === id ? { ...task, done: !task.done } : task
-        )
-      )
-    );
-  };
-
-  const [tempTask, setTempTask] = useState();
-  const [timer, setTimer] = useState(5);
-  const timerRef = useRef();
-
-  const deleteDone = (id) => {
-    setTimer(5);
-    const filteredTasks = tasks.filter((task) => task.id !== id);
-
-    const tempoTask = tasks.find((task) => task.id === id);
-    console.log(tempoTask);
 
     setTasks(filteredTasks);
-    setTempTask(tempoTask);
 
     localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+  };
+  const [tempTask, setTempTask] = useState(null);
+  const [timer, setTimer] = useState(5);
+  const timerRef = useRef();
+  const [edit, setEdit] = useState();
+
+  const deleteTask = (id) => {
+    setTimer(5);
+    const filteredTasks = tasks.filter((task) => task.id !== id);
+    const tempoTasks = tasks.find((task) => task.id === id);
+
+    setTasks(filteredTasks);
+    setTempTask(tempoTasks);
 
     setTimeout(() => {
       setTempTask(null);
@@ -80,133 +68,120 @@ const TodoTest = () => {
 
     timerRef.current = setInterval(() => {
       if (timer > 1) {
-        setTimer((pre) => pre - 1);
-      } else {
-        clearInterval(timerRef.current);
+        setTimer((prev) => prev - 1);
       }
     }, 1000);
-  };
 
-  useEffect(() => {
-    console.log(tempTask);
-  }, [tempTask]);
+    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+  };
 
   const editTask = (id, name) => {
     setTasks(
-      tasks.map((task) => (task.id === id ? { ...task, edit: true } : task))
+      tasks.map((task) =>
+        task.id === id ? { ...task, edit: !task.edit } : task
+      )
     );
-
-    setEditTask(name);
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify(
+        tasks.map((task) =>
+          task.id === id ? { ...task, edit: !task.edit } : task
+        )
+      )
+    );
+    setEdit(name);
   };
 
   const saveTask = (id) => {
-    const updatedTasks = tasks.map((task) =>
+    const filteredTasks = tasks.map((task) =>
       task.id === id ? { ...task, name: edit, edit: false } : task
     );
 
-    setTasks(updatedTasks);
+    setTasks(filteredTasks);
 
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setEditTask(""); // ✅ Clear input field after saving
+    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
   };
-
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "done") return task.done;
-    if (filter === "pending") return !task.done;
-    return true;
-  });
 
   return (
     <>
-      <input placeholder="add new task" type="text" ref={todoRef} />
-      <button onClick={() => addNewTask()}>add task</button>
+      <input placeholder="add new task" type="text" ref={taskRef} />
+      <button onClick={() => createTask()}>add task</button>
+      <br />
       {tempTask && (
         <button
           style={{
-            marginLeft: "50px",
             backgroundColor: "grey",
             padding: "5px",
-            // margin: "10px",
-            position: "absolute",
-            top: "50px",
             color: "silver",
+            position: "absolute",
+            left: "50%",
           }}
           onClick={() => {
             setTasks([...tasks, tempTask]);
-            localStorage.setItem("tasks", JSON.stringify([...tasks, tempTask]));
             clearInterval(timerRef.current);
             setTempTask(null);
+            localStorage.setItem("tasks", JSON.stringify([...tasks, tempTask]));
           }}
         >
           undo {timer}
         </button>
       )}
 
-      <br />
-      <button
-        style={{ border: "1px solid", margin: "2px", padding: "2px" }}
-        onClick={() => setFilter("all")}
-      >
-        All
-      </button>
-      <button
-        style={{ border: "1px solid", margin: "2px", padding: "2px" }}
-        onClick={() => setFilter("pending")}
-      >
-        Pending
-      </button>
-      <button
-        style={{ border: "1px solid", margin: "2px", padding: "2px" }}
-        onClick={() => setFilter("done")}
-      >
-        Done
-      </button>
-
       <ul>
-        {filteredTasks?.map((task) => (
-          <li key={task?.id}>
-            {task?.done === true ? (
+        {tasks.map((task) => (
+          <li key={task.id}>
+            {task.done === true ? (
               <span
                 style={{
                   color: "red",
-                  opacity: "50%",
+                  opacity: "60%",
                   textDecoration: "line-through",
                 }}
               >
-                {task.name}
+                {task.edit === true ? (
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                  />
+                ) : (
+                  task.name
+                )}
               </span>
-            ) : task?.edit === true ? (
-              <input
-                value={edit}
-                onChange={(e) => setEditTask(e.target.value)}
-              />
             ) : (
-              task?.name
+              <span>
+                {task.edit === true ? (
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                  />
+                ) : (
+                  task.name
+                )}
+              </span>
             )}
             <button
-              onClick={() => taskDone(task.id)}
-              style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+              style={{ border: "1px solid", margin: "2px", padding: "2px" }}
+              onClick={() => doneTask(task.id)}
             >
-              done
+              {task.done === true ? "undone" : "done"}
             </button>
             <button
-              onClick={() => deleteDone(task.id)}
-              style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+              style={{ border: "1px solid", margin: "2px", padding: "2px" }}
+              onClick={() => deleteTask(task.id)}
             >
               delete
             </button>
-
             {task.edit === false ? (
               <button
-                onClick={() => editTask(task?.id, task?.name)}
-                style={{ border: "1px solid", padding: "2px", margin: "2px" }}
+                style={{ border: "1px solid", margin: "2px", padding: "2px" }}
+                onClick={() => editTask(task.id, task.name)}
               >
                 edit
               </button>
             ) : (
               <button
+                style={{ border: "1px solid", margin: "2px", padding: "2px" }}
                 onClick={() => saveTask(task.id)}
-                style={{ border: "1px solid", padding: "2px", margin: "2px" }}
               >
                 save
               </button>
@@ -217,5 +192,4 @@ const TodoTest = () => {
     </>
   );
 };
-
 export default TodoTest;
