@@ -1,3 +1,4 @@
+// import { Checkbox } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 
 const TodoTest = () => {
@@ -7,12 +8,14 @@ const TodoTest = () => {
       name: "react",
       done: false,
       edit: false,
+      isChecked: false,
     },
     {
       id: 2,
       name: "node",
       done: false,
       edit: false,
+      isChecked: false,
     },
   ]);
 
@@ -24,6 +27,7 @@ const TodoTest = () => {
       name: taskRef.current.value,
       done: false,
       edit: false,
+      isChecked: false,
     };
 
     setTasks([...tasks, newTask]);
@@ -102,6 +106,7 @@ const TodoTest = () => {
     localStorage.setItem("tasks", JSON.stringify(filteredTasks));
   };
 
+  console.log(tasks);
   return (
     <>
       <input placeholder="add new task" type="text" ref={taskRef} />
@@ -130,7 +135,7 @@ const TodoTest = () => {
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>
-            {task.done === true ? (
+            {task.isChecked === true ? (
               <span
                 style={{
                   color: "red",
@@ -159,12 +164,22 @@ const TodoTest = () => {
                 )}
               </span>
             )}
-            <button
+            {/* <button
               style={{ border: "1px solid", margin: "2px", padding: "2px" }}
               onClick={() => doneTask(task.id)}
             >
               {task.done === true ? "undone" : "done"}
-            </button>
+            </button> */}
+            <input
+              type="checkbox"
+              checked={task.isChecked}
+              onChange={() => {
+                const filTask = tasks.map((t) =>
+                  t.id === task.id ? { ...t, isChecked: !t.isChecked } : t
+                );
+                setTasks(filTask);
+              }}
+            />
             <button
               style={{ border: "1px solid", margin: "2px", padding: "2px" }}
               onClick={() => deleteTask(task.id)}
