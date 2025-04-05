@@ -17,9 +17,7 @@ const TodoTest = () => {
   ]);
 
   const todoRef = useRef();
-
   const [edit, setEditTask] = useState();
-
   const [filter, setFilter] = useState("all");
 
   const addNewTask = () => {
@@ -60,12 +58,38 @@ const TodoTest = () => {
     );
   };
 
+  const [tempTask, setTempTask] = useState();
+  const [timer, setTimer] = useState(5);
+  const timerRef = useRef();
+
   const deleteDone = (id) => {
+    setTimer(5);
     const filteredTasks = tasks.filter((task) => task.id !== id);
 
+    const tempoTask = tasks.find((task) => task.id === id);
+    console.log(tempoTask);
+
     setTasks(filteredTasks);
+    setTempTask(tempoTask);
+
     localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+
+    setTimeout(() => {
+      setTempTask(null);
+    }, 5000);
+
+    timerRef.current = setInterval(() => {
+      if (timer > 1) {
+        setTimer((pre) => pre - 1);
+      } else {
+        clearInterval(timerRef.current);
+      }
+    }, 1000);
   };
+
+  useEffect(() => {
+    console.log(tempTask);
+  }, [tempTask]);
 
   const editTask = (id, name) => {
     setTasks(
@@ -96,6 +120,28 @@ const TodoTest = () => {
     <>
       <input placeholder="add new task" type="text" ref={todoRef} />
       <button onClick={() => addNewTask()}>add task</button>
+      {tempTask && (
+        <button
+          style={{
+            marginLeft: "50px",
+            backgroundColor: "grey",
+            padding: "5px",
+            // margin: "10px",
+            position: "absolute",
+            top: "50px",
+            color: "silver",
+          }}
+          onClick={() => {
+            setTasks([...tasks, tempTask]);
+            localStorage.setItem("tasks", JSON.stringify([...tasks, tempTask]));
+            clearInterval(timerRef.current);
+            setTempTask(null);
+          }}
+        >
+          undo {timer}
+        </button>
+      )}
+
       <br />
       <button
         style={{ border: "1px solid", margin: "2px", padding: "2px" }}
