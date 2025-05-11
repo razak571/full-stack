@@ -13,8 +13,8 @@ import Test from "../components/Test";
 import ReactQueryCRUD from "../components/ReactQueryCRUD";
 import Todo from "../components/Todo";
 import TodoTest from "../components/TodoTest";
-import Delete from "../components/Delete";
 import Task from "../components/Task";
+import ComponentA from "../components/ComponentA";
 
 // Igonre the code, this is just for practice
 
@@ -66,7 +66,7 @@ const Home = () => {
       {/* <ReactQueryCRUD /> */}
       {/* <Todo /> */}
       {/* <TodoTest /> */}
-      <Task />
+      <ComponentA />
     </div>
   );
 };

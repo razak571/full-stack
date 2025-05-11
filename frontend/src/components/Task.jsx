@@ -41,6 +41,7 @@ const Task = () => {
     } else {
       setTasks(tasks);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteTask = (id) => {
