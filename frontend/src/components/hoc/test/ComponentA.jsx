@@ -1,17 +1,26 @@
-import { useSharedData } from "./useDataShare";
+import { useReducer } from "react";
 
-function ComponentA() {
-  const shared = useSharedData();
-
-  const handleClk = () => {
-    shared.notify("data from ComponentA");
-  };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1, name: state.name };
+    case "decrement":
+      return { count: state.count - 1, name: state.name };
+    default:
+      return state;
+  }
+};
+const ComponentA = () => {
+  const [state, dispatch] = useReducer(reducer, { count: 0, name: "razak" });
   return (
     <>
-      <h1>ComponetA, click to send data</h1>
-      <button onClick={handleClk}>SEND</button>
+      <h1>
+        count: {state.count} name: {state.name}{" "}
+      </h1>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button> <br />
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
     </>
   );
-}
+};
 
 export default ComponentA;
