@@ -14,7 +14,9 @@ import ReactQueryCRUD from "../components/ReactQueryCRUD";
 import Todo from "../components/Todo";
 import TodoTest from "../components/TodoTest";
 import Task from "../components/Task";
-import ComponentA from "../components/ComponentA";
+import ComponentA from "../../src/components/hoc/test/ComponentA";
+import UseReducer from "../components/UseReducer";
+import ComponentB from "../components/hoc/test/ComponentB";
 
 // Igonre the code, this is just for practice
 
@@ -66,7 +68,10 @@ const Home = () => {
       {/* <ReactQueryCRUD /> */}
       {/* <Todo /> */}
       {/* <TodoTest /> */}
+      {/* <ComponentA /> */}
+      {/* <UseReducer /> */}
       <ComponentA />
+      <ComponentB />
     </div>
   );
 };
