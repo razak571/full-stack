@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
-import { useSharedData } from "./useDataShare";
-
+import { useFetchData } from "./useDataFetch";
 const ComponentB = () => {
-  const shared = useSharedData();
+  const { data, loading, error } = useFetchData(
+    "https://dummy-json.mock.beeceptor.com/posts"
+  );
 
-  const [message, setMessage] = useState("");
+  if (loading) return <h1>Loading</h1>;
+  if (error) return <h1>error {error.message} </h1>;
 
-  useEffect(() => {
-    shared.subscribe(setMessage);
-  }, [shared]);
-
-  return <h1>ComponentB {message}</h1>;
+  console.log(data);
+  return (
+    <>
+      {data?.map((data) => (
+        <h1 key={data.id}> Data:: {data.title} </h1>
+      ))}
+    </>
+  );
 };
 
 export default ComponentB;

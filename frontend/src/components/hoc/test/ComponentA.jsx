@@ -1,26 +1,14 @@
-import { useReducer } from "react";
+import { useFetchData } from "./useDataFetch";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "increment":
-      return { count: state.count + 1, name: state.name };
-    case "decrement":
-      return { count: state.count - 1, name: state.name };
-    default:
-      return state;
-  }
-};
-const ComponentA = () => {
-  const [state, dispatch] = useReducer(reducer, { count: 0, name: "razak" });
-  return (
-    <>
-      <h1>
-        count: {state.count} name: {state.name}{" "}
-      </h1>
-      <button onClick={() => dispatch({ type: "increment" })}>+</button> <br />
-      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
-    </>
+function ComponentA() {
+  const { data, loading, error } = useFetchData(
+    "https://jsonplaceholder.typicode.com/todos/1"
   );
-};
+
+  if (loading) return <pre> {JSON.stringify(loading)} </pre>;
+  if (error) return <pre> {JSON.stringify(error.message)} </pre>;
+  console.log(data);
+  return <pre> {JSON.stringify(data, null, 2)} </pre>;
+}
 
 export default ComponentA;

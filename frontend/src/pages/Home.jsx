@@ -71,7 +71,7 @@ const Home = () => {
       {/* <ComponentA /> */}
       {/* <UseReducer /> */}
       <ComponentA />
-      {/* <ComponentB /> */}
+      <ComponentB />
     </div>
   );
 };
