@@ -1,20 +1,16 @@
-import { useFetchData } from "./useDataFetch";
-const ComponentB = () => {
-  const { data, loading, error } = useFetchData(
-    "https://dummy-json.mock.beeceptor.com/posts"
-  );
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
+import React from "react";
+// const ComponentB = React.memo(({increment}) => {
+//   console.log("re ran child");
+//   return <button onClick={increment}>CallIt</button>;
+// });
 
-  if (loading) return <h1>Loading</h1>;
-  if (error) return <h1>error {error.message} </h1>;
+// export default ComponentB;
 
-  console.log(data);
-  return (
-    <>
-      {data?.map((data) => (
-        <h1 key={data.id}> Data:: {data.title} </h1>
-      ))}
-    </>
-  );
-};
+const ComponentB = React.memo(({ increment }) => {
+  console.log("Child rendered"); // to track renders
+  return <button onClick={increment}>Increment</button>;
+});
 
 export default ComponentB;

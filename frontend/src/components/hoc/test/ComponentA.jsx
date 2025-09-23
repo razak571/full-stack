@@ -1,25 +1,31 @@
-import { useState, useRef } from "react";
+import { useCallback, useState } from "react";
+import ComponentB from "./ComponentB";
 
 function ComponentA() {
-  // useEffect = to run side effects i.e. calling api,
+  const [count, setCount] = useState(0);
+  const [otherState, setOtherState] = useState(false);
 
-  const [count, setCount] = useState(10);
+  const increment = useCallback(() => {
+    console.log("call");
+    setCount((prevCount) => prevCount + 1);
+  }, []);
 
-  const mutableCount = useRef(0);
-
-  const updateMutable = () => {
-    mutableCount.current = mutableCount.current + 1;
-    console.log(mutableCount.current);
-  };
+  // const increment = () => {
+  //   console.log("call");
+  //   setCount((prevCount) => prevCount + 1);
+  // };
+  console.log(otherState);
 
   return (
     <>
-      <h1>
-        count: {count} || mutable count: {mutableCount.current}{" "}
-      </h1>
-      <button onClick={() => setCount(count + 1)}>count+</button>
-      <br />
-      <button onClick={updateMutable}>mutable+</button>
+      <div>
+        <p>Count: {count}</p>
+        <button onClick={increment}>Increment</button>
+        <button onClick={() => setOtherState(!otherState)}>
+          Toggle Other State
+        </button>
+      </div>
+      <ComponentB increment={increment} />
     </>
   );
 }
