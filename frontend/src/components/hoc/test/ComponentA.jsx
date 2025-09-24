@@ -1,21 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
+
+const compute = () => {
+  console.log("compute function called");
+
+  let result = 0;
+  for (let i = 0; i < 100; i++) {
+    // console.log("loop ran");
+    result += result + i;
+  }
+  return result;
+};
 
 function ComponentA() {
   const [toggle, setToggle] = useState(false);
 
-  // const increment = () => {
-  //   console.log("increment called");
-  // };
-
-  const increment = useCallback(() => {
-    console.log("increment called");
-  }, []);
-
-  useEffect(() => {
-    console.log("side effect ran...!");
-  }, [increment]);
-
   console.log(toggle);
+
+  const computeValue = useMemo(() => compute(), []);
+
+  // const computeValue = compute();
+  console.log(computeValue);
 
   return (
     <>
