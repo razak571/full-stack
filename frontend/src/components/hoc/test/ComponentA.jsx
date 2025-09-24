@@ -1,37 +1,23 @@
-import { useCallback, useMemo, useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../../../App";
 
-const compute = () => {
-  console.log("compute function called");
-
-  let result = 0;
-  for (let i = 0; i < 100; i++) {
-    // console.log("loop ran");
-    result += result + i;
-  }
-  return result;
-};
+import { UserContext } from "./contexts/UserProvider";
 
 function ComponentA() {
-  const [toggle, setToggle] = useState(false);
+  const { theme, setTheme } = useContext(ThemeContext);
 
-  // const increment = () => {
-  //   console.log("increment called");
-  // };
+  const { user, setUser } = useContext(UserContext);
 
-  const increment = useCallback(() => {
-    console.log("increment called");
-  }, []);
-
-  console.log(toggle);
-
-  const computeValue = useMemo(() => compute(), [increment]);
-
-  // const computeValue = compute();
-  console.log(computeValue);
+  console.log(user);
 
   return (
     <>
-      <button onClick={() => setToggle(!toggle)}>Toggle</button>
+      <h1>theme: {theme} </h1>
+      <h1>user: {user ? user.name : "Guest"} </h1>
+      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        Change Theme
+      </button>
+      <button onClick={() => setUser({ name: "Razak" })}>Set User name</button>
     </>
   );
 }

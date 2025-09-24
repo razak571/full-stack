@@ -1,15 +1,14 @@
-import React from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../../../App";
 
-// eslint-disable-next-line react/prop-types, react/display-name
-const ComponentB = React.memo(({ increment }) => {
-  console.log("child re-render");
+const ComponentB = () => {
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
     <>
-      <br />
-      <button onClick={increment}>Call increment</button>
+      <h5>B I am: {theme}</h5>
     </>
   );
-});
+};
 
 export default ComponentB;

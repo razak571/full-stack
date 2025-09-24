@@ -1,12 +1,25 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import Navigation from "./components/Navigation";
+
+import { createContext, useEffect, useState } from "react";
+
+export const ThemeContext = createContext();
+
+import Userprovider from "../src/components/hoc/test/contexts/UserProvider";
 
 function App() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    console.log(theme);
+  }, [theme]);
   return (
     <>
-      {/* <Navigation /> */}
-      <Outlet />
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <Userprovider>
+          <Outlet />
+        </Userprovider>
+      </ThemeContext.Provider>
     </>
   );
 }
