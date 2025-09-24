@@ -1,16 +1,14 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
+// eslint-disable-next-line react/prop-types
 import React from "react";
-// const ComponentB = React.memo(({increment}) => {
-//   console.log("re ran child");
-//   return <button onClick={increment}>CallIt</button>;
-// });
-
-// export default ComponentB;
-
+// eslint-disable-next-line react/display-name, react/prop-types
 const ComponentB = React.memo(({ increment }) => {
-  console.log("Child rendered"); // to track renders
-  return <button onClick={increment}>Increment</button>;
+  console.log("child re-rendered");
+  return (
+    <>
+      <h2>hello</h2>
+      <button onClick={increment}>call INC</button>
+    </>
+  );
 });
 
 export default ComponentB;

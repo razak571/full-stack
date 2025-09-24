@@ -1,30 +1,27 @@
-import { useCallback, useState } from "react";
+import { useState, useCallback } from "react";
 import ComponentB from "./ComponentB";
 
 function ComponentA() {
   const [count, setCount] = useState(0);
-  const [otherState, setOtherState] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   const increment = useCallback(() => {
-    console.log("call");
-    setCount((prevCount) => prevCount + 1);
-  }, []);
+    console.log("increment called");
+    setCount(count + 1);
+  }, [count]);
 
   // const increment = () => {
-  //   console.log("call");
-  //   setCount((prevCount) => prevCount + 1);
+  //   console.log("increment called");
   // };
-  console.log(otherState);
 
+  console.log(toggle);
   return (
     <>
-      <div>
-        <p>Count: {count}</p>
-        <button onClick={increment}>Increment</button>
-        <button onClick={() => setOtherState(!otherState)}>
-          Toggle Other State
-        </button>
-      </div>
+      {/* <h1>toggle: {toggle} </h1> */}
+      <button onClick={() => setToggle(!toggle)}>Toggle</button>
+      <br />
+      {/* <button onClick={() => setCount(count + 1)}>Count+</button> */}
+
       <ComponentB increment={increment} />
     </>
   );
