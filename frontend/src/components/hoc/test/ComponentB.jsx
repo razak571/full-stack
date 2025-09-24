@@ -1,12 +1,13 @@
-// eslint-disable-next-line react/prop-types
 import React from "react";
-// eslint-disable-next-line react/display-name, react/prop-types
+
+// eslint-disable-next-line react/prop-types, react/display-name
 const ComponentB = React.memo(({ increment }) => {
-  console.log("child re-rendered");
+  console.log("child re-render");
+
   return (
     <>
-      <h2>hello</h2>
-      <button onClick={increment}>call INC</button>
+      <br />
+      <button onClick={increment}>Call increment</button>
     </>
   );
 });
