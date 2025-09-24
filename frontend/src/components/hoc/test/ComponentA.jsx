@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ThemeContext } from "../../../App";
+import { ThemeContext } from "./contexts/ThemeProvider";
 
 import { UserContext } from "./contexts/UserProvider";
 
@@ -12,12 +12,14 @@ function ComponentA() {
 
   return (
     <>
-      <h1>theme: {theme} </h1>
-      <h1>user: {user ? user.name : "Guest"} </h1>
+      <h1>Theme: {theme} </h1>
       <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-        Change Theme
+        Toggle Theme
       </button>
-      <button onClick={() => setUser({ name: "Razak" })}>Set User name</button>
+      <h1>User: {user ? `${user.name} (${user.role})` : "Guest"} </h1>
+      {/* <button onClick={() => setUser({ name: "Razak", role: "Developer" })}>
+        Set User name
+      </button> */}
     </>
   );
 }
