@@ -1,18 +1,33 @@
-import ComponentB from "./ComponentB";
-import { useDataFetch } from "./UseDataFetch2";
+import { useEffect, useState, useMemo } from "react";
+
+const expensiveCalculation = (data) => {
+  console.log(` ${data} expensive called`);
+  let result = 0;
+  for (let i = 0; i < 1e7; i++) {
+    result += i + data;
+  }
+  return result;
+};
 
 function ComponentA() {
-  const { data, loading, error } = useDataFetch(
-    "https://jsonplaceholder.typicode.com/todos/1"
-  );
+  const [count, setCount] = useState(0);
+  const [toggle, SetToggle] = useState(false);
 
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <pre>{JSON.stringify(error, null, 2)} </pre>;
+  // useEffect(() => {
+  //   const expensiveRes = expensiveCalculation(count);
+  //   console.log(expensiveRes);
+  // }, [count]);
+
+  const expensiveRes = useMemo(() => expensiveCalculation(count), [count]);
+
+  console.log(expensiveRes);
+  console.log(toggle);
 
   return (
     <>
-      <pre>{JSON.stringify(data, null, 2)} </pre>
-      <ComponentB />
+      <h1>{expensiveRes} </h1>
+      <button onClick={() => SetToggle(!toggle)}>Toggle</button>
+      <button onClick={() => setCount(count + 1)}>Count++</button>
     </>
   );
 }
