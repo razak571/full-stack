@@ -1,16 +1,23 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 function ComponentA() {
-  const inputRef = useRef();
+  const mutableCount = useRef(1);
+  const [count, setCount] = useState(0);
 
-  const handle = () => {
-    inputRef.current.focus();
+  const updateMutableCount = () => {
+    console.log("called");
+    mutableCount.current += 1;
   };
+
+  console.log(`count: ${count} || mutableCount: ${mutableCount.current}`);
 
   return (
     <>
-      <input type="text" ref={inputRef} /> {"  "}
-      <button onClick={handle}>Focus</button>
+      <h1>
+        count: {count} || mutableCount: {mutableCount.current}{" "}
+      </h1>
+      <button onClick={() => setCount(count + 1)}>Count++</button> <br />
+      <button onClick={updateMutableCount}>Mutable++</button>
     </>
   );
 }
