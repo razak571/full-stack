@@ -1,25 +1,16 @@
-import { useContext } from "react";
-import { ThemeContext } from "./contexts/ThemeProvider";
-
-import { UserContext } from "./contexts/UserProvider";
-
+import ComponentB from "./ComponentB";
+import { useSharedData } from "./UseSharedData";
 function ComponentA() {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const shared = useSharedData();
 
-  const { user, setUser } = useContext(UserContext);
-
-  console.log(user);
+  const handleClick = () => {
+    console.log(shared.notify("Message from Component A"));
+  };
 
   return (
     <>
-      <h1>Theme: {theme} </h1>
-      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-        Toggle Theme
-      </button>
-      <h1>User: {user ? `${user.name} (${user.role})` : "Guest"} </h1>
-      {/* <button onClick={() => setUser({ name: "Razak", role: "Developer" })}>
-        Set User name
-      </button> */}
+      <button onClick={handleClick}>Pass Data To Component B</button>
+      <ComponentB />
     </>
   );
 }
