@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { useSharedData } from "./UseSharedData";
+import { useDataFetch } from "./UseDataFetch2";
 
 const ComponentB = () => {
-  const shared = useSharedData();
+  const { data, loading, error } = useDataFetch(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
 
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    shared.subscribe(setMessage);
-  }, [shared]);
+  if (loading) return <h1>Loading Posts</h1>;
+  if (error) return <h1>`Error:: ${error}`</h1>;
 
   return (
     <>
-      <h5>B I am: {message}</h5>
+      {data?.map((post) => (
+        <h5 key={post.id}> {post.title} </h5>
+      ))}
     </>
   );
 };
