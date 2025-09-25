@@ -1,33 +1,38 @@
-import { useEffect, useState, useMemo } from "react";
-
-const expensiveCalculation = (data) => {
-  console.log(` ${data} expensive called`);
-  let result = 0;
-  for (let i = 0; i < 1e7; i++) {
-    result += i + data;
-  }
-  return result;
-};
+import { useEffect, useState } from "react";
 
 function ComponentA() {
-  const [count, setCount] = useState(0);
-  const [toggle, SetToggle] = useState(false);
+  let url = "https://jsonplaceholder.typicode.com/todos/1";
 
-  // useEffect(() => {
-  //   const expensiveRes = expensiveCalculation(count);
-  //   console.log(expensiveRes);
-  // }, [count]);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const expensiveRes = useMemo(() => expensiveCalculation(count), [count]);
+  useEffect(() => {
+    const dataFetch = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw Error("Res.ok not true");
+        }
+        const resData = await res.json();
+        setData(resData);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    dataFetch();
+  }, [url]);
 
-  console.log(expensiveRes);
-  console.log(toggle);
-
+  if (loading) return <h1>Loading...</h1>;
+  if (error) return <h1>Error hai:: {error}</h1>;
   return (
     <>
-      <h1>{expensiveRes} </h1>
-      <button onClick={() => SetToggle(!toggle)}>Toggle</button>
-      <button onClick={() => setCount(count + 1)}>Count++</button>
+      <h1>{data?.title} </h1>
     </>
   );
 }
