@@ -1,26 +1,15 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
-
-const expensiveCal = () => {
-  console.log("expensive called");
-};
+import { useContext } from "react";
+import { ThemeContext } from "../../../App";
 
 function ComponentA() {
-  // const increment = () => {
-  //   console.log("increment called");
-  // };
-
-  const increment = useCallback(() => {
-    console.log("increment called");
-  }, []);
-
-  const [count, setCount] = useState(0);
-
-  const expResult = useMemo(() => expensiveCal(count), [increment]);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
     <>
-      <h1>{count} </h1>
-      <button onClick={() => setCount(count + 1)}>count++</button>
+      <h1>Theme: {theme}</h1>
+      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        Change Theme
+      </button>
     </>
   );
 }
