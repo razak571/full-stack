@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
 function ComponentA() {
-  const [count, setCount] = useState(5);
+  const inputRef = useRef();
 
-  useEffect(() => {
-    setInterval(() => {
-      setCount((prev) => Math.max(prev - 1, 0));
-    }, 1000);
-  }, []);
+  const handle = () => {
+    inputRef.current.focus();
+  };
 
   return (
     <>
-      <h1>Count: {count} </h1>
+      <input type="text" ref={inputRef} /> {"  "}
+      <button onClick={handle}>Focus</button>
     </>
   );
 }
