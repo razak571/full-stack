@@ -1,19 +1,21 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
+
+const expensiveCal = () => {
+  console.log("expensive called");
+};
 
 function ComponentA() {
-  const increment = () => {
-    console.log("increment called");
-  };
-
-  // const increment = useCallback(() => {
+  // const increment = () => {
   //   console.log("increment called");
-  // }, []);
+  // };
+
+  const increment = useCallback(() => {
+    console.log("increment called");
+  }, []);
 
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    console.log("useEffect called");
-  }, [increment]);
+  const expResult = useMemo(() => expensiveCal(count), [increment]);
 
   return (
     <>
