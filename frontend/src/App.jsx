@@ -1,17 +1,14 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
 
-import ThemeProvider from "./components/hoc/test/contexts/ThemeContext";
+import RootProvider from "../src/components/hoc/test/contexts/RootProvider";
 
-import UserProvider from "./components/hoc/test/contexts/UserContext";
 function App() {
   return (
     <>
-      <ThemeProvider>
-        <UserProvider>
-          <Outlet />
-        </UserProvider>
-      </ThemeProvider>
+      <RootProvider>
+        <Outlet />
+      </RootProvider>
     </>
   );
 }
