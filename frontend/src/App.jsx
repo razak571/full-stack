@@ -1,16 +1,17 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import { createContext, useState } from "react";
 
-export const ThemeContext = createContext();
+import ThemeProvider from "./components/hoc/test/contexts/ThemeContext";
 
+import UserProvider from "./components/hoc/test/contexts/UserContext";
 function App() {
-  const [theme, setTheme] = useState("light");
   return (
     <>
-      <ThemeContext.Provider value={{ theme, setTheme }}>
-        <Outlet />
-      </ThemeContext.Provider>
+      <ThemeProvider>
+        <UserProvider>
+          <Outlet />
+        </UserProvider>
+      </ThemeProvider>
     </>
   );
 }
