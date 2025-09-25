@@ -1,23 +1,22 @@
-import { useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import ComponentB from "./ComponentB";
 
 function ComponentA() {
-  const mutableCount = useRef(1);
+  // const increment = () => {
+  //   console.log("increment called");
+  // };
+
+  const increment = useCallback(() => {
+    console.log("increment called");
+  }, []);
+
   const [count, setCount] = useState(0);
-
-  const updateMutableCount = () => {
-    console.log("called");
-    mutableCount.current += 1;
-  };
-
-  console.log(`count: ${count} || mutableCount: ${mutableCount.current}`);
 
   return (
     <>
-      <h1>
-        count: {count} || mutableCount: {mutableCount.current}{" "}
-      </h1>
-      <button onClick={() => setCount(count + 1)}>Count++</button> <br />
-      <button onClick={updateMutableCount}>Mutable++</button>
+      <h1>{count} </h1>
+      <button onClick={() => setCount(count + 1)}>count++</button>
+      <ComponentB increment={increment} />
     </>
   );
 }
