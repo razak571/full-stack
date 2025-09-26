@@ -30,7 +30,6 @@ function ComponentA() {
     setTodos([...todos, newTask]);
     localStorage.setItem("task", JSON.stringify([...todos, newTask]));
     idRef.current += 1;
-    console.log(idRef.current);
   };
 
   useEffect(() => {
@@ -54,7 +53,6 @@ function ComponentA() {
   };
 
   const editTask = (id, task) => {
-    console.log(id);
     const updatedTodo = todos?.map((todo) =>
       todo.id === id ? { ...todo, edit: true } : todo
     );
@@ -78,6 +76,11 @@ function ComponentA() {
   const inputRef = useRef();
   const [edit, setEdit] = useState("default");
 
+  const deleteTask = (id) => {
+    const filteredTodos = todos?.filter((todo) => todo.id !== id);
+    setTodos(filteredTodos);
+    localStorage.setItem("task", JSON.stringify(filteredTodos));
+  };
   return (
     <>
       <button onClick={() => createTask()}>add todo</button>
@@ -114,7 +117,8 @@ function ComponentA() {
             >
               done
             </button>{" "}
-            <button onClick={() => editTask(todo.id, todo.task)}>edit</button>
+            <button onClick={() => editTask(todo.id, todo.task)}>edit</button>{" "}
+            <button onClick={() => deleteTask(todo.id)}>delete</button>
           </h3>
         )
       )}
