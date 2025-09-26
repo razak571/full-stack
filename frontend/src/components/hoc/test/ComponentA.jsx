@@ -17,19 +17,22 @@ function ComponentA() {
   ]);
 
   // let id = 3;
-  const idRef = useRef(3);
+  // const idRef = useRef(3);
   const createTask = () => {
-    // const date = new Date();
-    // console.log(date);
+    const id = Date.now();
+    console.log(id);
     const newTask = {
-      id: idRef.current,
-      task: `task ${idRef.current}`,
+      id: id,
+      // task: `task ${idRef.current}`,
+      task: `task${id}`,
       done: false,
       edit: false,
     };
+
+    console.log(newTask);
     setTodos([...todos, newTask]);
     localStorage.setItem("task", JSON.stringify([...todos, newTask]));
-    idRef.current += 1;
+    // idRef.current += 1;
   };
 
   useEffect(() => {
