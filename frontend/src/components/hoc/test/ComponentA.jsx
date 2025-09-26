@@ -20,7 +20,6 @@ function ComponentA() {
   // const idRef = useRef(3);
   const createTask = () => {
     const id = Date.now();
-    console.log(id);
     const newTask = {
       id: id,
       // task: `task ${idRef.current}`,
@@ -29,7 +28,6 @@ function ComponentA() {
       edit: false,
     };
 
-    console.log(newTask);
     setTodos([...todos, newTask]);
     localStorage.setItem("task", JSON.stringify([...todos, newTask]));
     // idRef.current += 1;
