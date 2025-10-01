@@ -1,128 +1,140 @@
 import { useEffect, useRef, useState } from "react";
 
 function ComponentA() {
-  const [todos, setTodos] = useState([
+  const [tasks, setTasks] = useState([
     {
       id: 1,
-      task: "react",
+      todo: "react",
       done: false,
       edit: false,
     },
     {
       id: 2,
-      task: "node",
+      todo: "node",
       done: false,
       edit: false,
     },
   ]);
 
-  // let id = 3;
-  // const idRef = useRef(3);
   const createTask = () => {
-    const id = Date.now();
-    const newTask = {
-      id: id,
-      // task: `task ${idRef.current}`,
-      task: `task${id}`,
-      done: false,
-      edit: false,
-    };
+    console.log("cal", inputRef.current.value);
 
-    setTodos([...todos, newTask]);
-    localStorage.setItem("task", JSON.stringify([...todos, newTask]));
-    // idRef.current += 1;
+    if (inputRef.current.value) {
+      const newTask = {
+        id: Date.now(),
+        todo: inputRef.current.value,
+        done: false,
+        edit: false,
+      };
+      setTasks([...tasks, newTask]);
+      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
+      inputRef.current.value = "";
+    } else {
+      alert("task empty");
+    }
   };
 
   useEffect(() => {
-    if (localStorage.getItem("task")) {
-      const tasks = JSON.parse(localStorage.getItem("task"));
-      setTodos(tasks);
-
-      const localTodos = JSON.parse(localStorage.getItem("task"));
-      const filteredTodo = localTodos?.filter((todo) => todo.edit === true);
-      const editTodo = filteredTodo[0];
-      setEdit(editTodo?.task);
+    if (localStorage.getItem("tasks")) {
+      const tasks = JSON.parse(localStorage.getItem("tasks"));
+      setTasks(tasks);
     }
   }, []);
 
+  const inputRef = useRef();
+
   const doneTask = (id) => {
-    const updatedTodo = todos?.map((todo) =>
-      todo.id === id ? { ...todo, done: !todo.done } : todo
+    console.log(id);
+    const filtetredTask = tasks.map((task) =>
+      task.id === id ? { ...task, done: !task.done } : task
     );
-    setTodos(updatedTodo);
-    localStorage.setItem("task", JSON.stringify(updatedTodo));
+
+    setTasks(filtetredTask);
+    localStorage.setItem("tasks", JSON.stringify(filtetredTask));
   };
 
-  const editTask = (id, task) => {
-    const updatedTodo = todos?.map((todo) =>
-      todo.id === id ? { ...todo, edit: true } : todo
+  const editTask = (id, todo) => {
+    console.log(id);
+    const filteredTask = tasks.map((task) =>
+      task.id === id ? { ...task, edit: true } : task
     );
 
-    setTodos(updatedTodo);
-    localStorage.setItem("task", JSON.stringify(updatedTodo));
-    setEdit(task);
+    console.log(filteredTask);
+    setTasks(filteredTask);
+    localStorage.setItem("tasks", JSON.stringify(filteredTask));
+    setEdit(todo);
   };
 
   const handleUpdate = (id) => {
-    const updatedTodos = todos?.map((todo) =>
-      todo.id === id
-        ? { ...todo, task: inputRef.current.value, edit: false }
-        : todo
+    console.log(id);
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, edit: false, todo: edit } : task
     );
-
-    setTodos(updatedTodos);
-    localStorage.setItem("task", JSON.stringify(updatedTodos));
+    console.log(updatedTasks);
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
-  const inputRef = useRef();
-  const [edit, setEdit] = useState("default");
+  const [edit, setEdit] = useState();
+
+  console.log(edit);
 
   const deleteTask = (id) => {
-    const filteredTodos = todos?.filter((todo) => todo.id !== id);
-    setTodos(filteredTodos);
-    localStorage.setItem("task", JSON.stringify(filteredTodos));
+    console.log(id);
+    const filteredTask = tasks.filter((task) => task.id !== id);
+    console.log(filteredTask);
+    setTasks(filteredTask);
+    localStorage.setItem("tasks", JSON.stringify(filteredTask));
   };
   return (
     <>
-      <button onClick={() => createTask()}>add todo</button>
-      {todos?.map((todo) =>
-        todo?.edit ? (
-          <span key={todo.id}>
-            <input
-              type="text"
-              style={{ border: "1px solid" }}
-              value={edit}
-              ref={inputRef}
-              onChange={(event) => setEdit(event.target.value)}
-            />
-            <button onClick={() => handleUpdate(todo.id)}>update</button>
-          </span>
-        ) : (
-          <h3 key={todo.id}>
-            {todo.done ? (
-              <span
-                style={{
-                  opacity: "50%",
-                  textDecoration: "line-through",
-                }}
-              >
-                {todo.task}{" "}
-              </span>
-            ) : (
-              todo.task
-            )}{" "}
-            <button
-              onClick={() => {
-                doneTask(todo.id);
-              }}
-            >
-              done
-            </button>{" "}
-            <button onClick={() => editTask(todo.id, todo.task)}>edit</button>{" "}
-            <button onClick={() => deleteTask(todo.id)}>delete</button>
-          </h3>
-        )
-      )}
+      <input type="text" placeholder="add task" ref={inputRef} />
+      <button onClick={() => createTask()}>add task</button>
+      {tasks?.map((task) => (
+        <h1 key={task.id}>
+          {"  "}
+          {task.done ? (
+            <span style={{ opacity: "50%", textDecoration: "line-through" }}>
+              {task.edit ? (
+                <>
+                  <input
+                    value={edit}
+                    onChange={(event) => {
+                      setEdit(event.target.value);
+                    }}
+                  />
+                  <button onClick={() => handleUpdate(task.id)}>Update</button>
+                </>
+              ) : (
+                task.todo
+              )}
+            </span>
+          ) : (
+            <span>
+              {task.edit ? (
+                <>
+                  <input
+                    value={edit}
+                    onChange={(event) => setEdit(event.target.value)}
+                  />{" "}
+                  <button onClick={() => handleUpdate(task.id)}>Upadte</button>
+                </>
+              ) : (
+                task.todo
+              )}
+            </span>
+          )}{" "}
+          {!task.edit && (
+            <>
+              <button onClick={() => doneTask(task.id)}>done</button>{" "}
+              <button onClick={() => editTask(task.id, task.todo)}>edit</button>{" "}
+              <button onClick={() => deleteTask(task.id, task.todo)}>
+                delete
+              </button>
+            </>
+          )}
+        </h1>
+      ))}
     </>
   );
 }
