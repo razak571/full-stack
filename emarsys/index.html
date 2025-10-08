@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Push Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" type="text/javascript"></script>
+    <!-- DO NOT copy the below -->
+    <!-- <script src='https://redirector.eservice.emarsys.net/ui/latest/js/app.js'></script> -->
+    <!-- DO NOT copy the above -->
+    <!-- Emarsys Web Push SDK initialization START -->
+    <!-- <script type="text/javascript" src="<%= assetsUrl %>/web-emarsys-sdk.js" async></script> -->
+    <script type="text/javascript" src="https://client-version.cf.emarsys.net/web-emarsys-sdk-v4/latest/web-emarsys-sdk.js" async></script>
+
+     <script type="text/javascript">
+      var WebEmarsysSdk = WebEmarsysSdk || []
+      WebEmarsysSdk.push(['init', {
+        // enableLogging: '<%= enableLogging %>',
+        applicationCode: 'XXXXX-XXXXX', // your application code
+        safariWebsitePushID: 'web.com.yoursite.example', //  unique reverse-domain string, obtained in you Apple Developer Portal. Only needed if you send push notifications to Safari browser
+        safariPushPackageServiceUrl: '<%= safariPushPackageServiceUrl %>',
+        defaultNotificationTitle: 'Your Default Title', // sets a default title for push notifications
+        defaultNotificationIcon: 'https://yoursite.com/img/your-logo.png', // URL to custom custom notification image
+        autoSubscribe: false, // or true. If true, prompts a user to subscribe for pushes upon SDK initialization
+        enableMacSafariVapid: true, // If true, enables vapid instead of APNS for safari on Mac
+        serviceWorker: {
+          url: 'service-worker.js',
+          applicationServerPublicKey: 'BNL0Ls98_iisp5pfrh87jn12NAoy50xoAWKtf7yj2by4zzT0RZ5VilkQopx3lfyJfsepksvB--YkTEQ2C6zWrQo'
+        },
+        clientServiceApiBaseUrl: '<%= clientServiceApiBaseUrl %>',
+        deviceEventServiceApiBaseUrl: '<%= deviceEventServiceApiBaseUrl %>'
+      }])
+      console.log("test",WebEmarsysSdk)
+    </script> 
+    <!-- Emarsys Web Push SDK initialization END -->
+
+    <!-- <script type="text/javascript">
+var WebEmarsysSdk = WebEmarsysSdk || []
+WebEmarsysSdk.push(['init', {
+  // applicationCode: 'XXXXX-XXXXX', // your Domain code obtained above
+  enableMacSafariVapid: true, // If true, enables VAPID instead of APNS for Safari on Mac
+  safariWebsitePushID: 'web.com.yoursite.example', //  unique reverse-domain string, obtained in you Apple Developer Portal
+        defaultNotificationTitle: 'Your Default Title', // sets your default title for push notifications
+        defaultNotificationIcon: 'https://yoursite.com/img/your-logo.png', // URL to your notification icon
+        autoSubscribe: false, // If true, prompts a user to subscribe for pushes upon SDK initialization which is not recommended
+        serviceWorker: {
+          url: 'service-worker.js',
+          applicationServerPublicKey: 'BNL0Ls98_iisp5pfrh87jn12NAoy50xoAWKtf7yj2by4zzT0RZ5VilkQopx3lfyJfsepksvB--YkTEQ2C6zWrQo'
+        }
+      }])
+console.log(WebEmarsysSdk)
+</script>   -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+    <!-- DO NOT copy the below -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://redirector.eservice.emarsys.net/ui/latest/css/app.css"> -->
+    <!-- DO NOT copy the above -->
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+        margin: 50px 25px;
+      }
+      .permission-status,
+      .subscription-status {
+          display: none;
+      }
+      .login-status {
+          display: none;
+          font-family: inherit;
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      fieldset {
+        margin: 30px 0;
+      }
+      input, button, textarea {
+        font-family: inherit;
+      }
+      #actionSubscribe,
+      #denied {color: red;}
+      #actionUnsubscribe,
+      #granted {color: green;}
+      #prompt {color: blue;}
+      .page {
+          max-width: 1000px;
+          padding: 0 20px;
+          margin: auto;
+      }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="e-box">
+      <h1><a href="/">ME Web Push</a></h1>
+      <div class="e-accordion">
+        <input type="checkbox" name="accordion-checkbox" id="accordion-checkbox-0" checked>
+        <label for="accordion-checkbox-0" class="e-accordion__title">
+          Subscription Status
+        </label>
+        <div class="e-accordion__content">
+          <div class="e-notice">
+            Status === subscribed, when notifications permission granted <i>and</i> device registered.
+          </div>
+          <div>
+            <table class="e-table e-table-condensed" data-e-version="2">
+              <tbody>
+                <tr>
+                  <td class="e-table__col e-table__col-medium e-table__col-right">
+                    Permission:
+                  </td>
+                  <td class="e-table__col e-table__col-small e-table__col-left">
+                    <b id="prompt" class="permission-status">Prompt</b>
+                    <b id="denied" class="permission-status">Denied</b>
+                    <b id="granted" class="permission-status">Granted</b>
+                  </td>
+                  <td class="e-table__col e-table__col-medium e-table__col-left"></td>
+                </tr>
+                <tr>
+                  <td class="e-table__col e-table__col-medium e-table__col-right">
+                    Subscribed:
+                  </td>
+                  <td class="e-table__col e-table__col-small e-table__col-left">
+                    <b id="actionSubscribe" class="subscription-status">
+                      Unsubscribed
+                    </b>
+                    <b id="actionUnsubscribe" class="subscription-status">
+                      Subscribed
+                    </b>
+                  </td>
+                  <td class="e-table__col e-table__col-medium e-table__col-left">
+                    <b id="actionSubscribe" class="subscription-status">
+                      <button class="e-btn e-btn-primary" onclick="generalSubscribe()">Subscribe</button>
+                    </b>
+                    <b id="actionUnsubscribe" class="subscription-status">
+                      <button class="e-btn e-btn-secondary" onclick="WebEmarsysSdk.unsubscribe()">Unsubscribe</button>
+                    </b>
+                  </td>
+                </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <input type="checkbox" name="accordion-checkbox" id="accordion-checkbox-1" disabled>
+        <label id="loginLogoutLabel" for="accordion-checkbox-1" class="e-accordion__title">
+          Login/Logout
+        </label>
+        <div class="e-accordion__content">
+          <fieldset id="loginLogout">
+            <b id="actionLogin" class="login-status">
+            <form id="loginLogoutForm">
+              <div class="success"></div>
+              <div class="error"></div>
+              <p>
+                <div id="anonIsLoggedId" class="e-notice"></div>
+                <input class="e-input e-input-small" type="text" name="contactFieldId" placeholder="Field ID..." required>
+                <input class="e-input e-input-large" type="text" name="contactFieldValue" placeholder="Specify contact value..." required>
+                <button id="loginButton" class="e-btn" type="submit">Trigger Login</button>
+              </p>
+            </form></b>
+            <div id="actionLogout" class="login-status">
+              <div id="loginInfo" class="e-notice"></div>
+              <button class="e-btn" onclick="logout()">Logout</button>
+            </div>
+          </fieldset>
+        </div>
+        <input type="checkbox" name="accordion-checkbox" id="accordion-checkbox-ce">
+        <label for="accordion-checkbox-ce" class="e-accordion__title">
+          Custom Event
+        </label>
+        <div class="e-accordion__content">
+          <button class="e-btn" onclick="customEvent()">Send custom event</button>
+        </div>
+        <input type="checkbox" name="accordion-checkbox" id="accordion-checkbox-2">
+        <label for="accordion-checkbox-2" class="e-accordion__title">
+          SDK Parameters
+        </label>
+        <div class="e-accordion__content">
+          <div>
+            <table id="deviceParams" class="e-table e-table-overview" data-e-version="2">
+              <thead>
+                <tr>
+                  <th class="e-table__col e-table__col-xsmall">
+                    Parameter
+                  </th>
+                  <th class="e-table__col e-table__col-medium">
+                    Value
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button onclick="test()" >Subscribe</button>
+ <script>
+      WebEmarsysSdk.push(['onReady', function(api) {
+        console.log('EVENT: onReady', api);
+        checkSubscription()
+      }]);
+      WebEmarsysSdk.push(['onSubscribe', function(api) {
+        console.log('EVENT: onSubscribe', api);
+        checkSubscription()
+      }]);
+      WebEmarsysSdk.push(['onUnsubscribe', function(api) {
+        console.log('EVENT: onUnsubscribe', api)
+        toggleNodesVisibility('.login-status', 'loginLogout')
+        checkSubscription()
+      }]);
+      WebEmarsysSdk.push(['onPermissionPrompt', function(api) {
+        console.log('EVENT: onPermissionPrompt', api)
+        toggleNodesVisibility('.permission-status', 'prompt')
+      }])
+      WebEmarsysSdk.push(['onPermissionDenied', function(api) {
+        console.log('EVENT: onPermissionDenied', api)
+        toggleNodesVisibility('.permission-status', 'denied')
+        checkSubscription()
+      }])
+      WebEmarsysSdk.push(['onPermissionGranted', function(api) {
+        console.log('EVENT: onPermissionGranted', api)
+        toggleNodesVisibility('.permission-status', 'granted')
+        checkSubscription()
+      }])
+      WebEmarsysSdk.push(['onSWInitError', function(api) {
+          console.log('EVENT: onSWInitError', api)
+      }])
+      function generalSubscribe() {
+        return WebEmarsysSdk.subscribe()
+      }
+      function test() {
+        alert('he')
+          const ret = WebEmarsysSdk.subscribe()
+          console.log(ret)
+      }
+
+      document.addEventListener('dblclick', function(e) {
+                 test();
+         });
+      function checkSubscription() {
+        WebEmarsysSdk.isSubscribed().then(function (res) {
+          toggleNodesVisibility('.subscription-status', res ? 'actionUnsubscribe' : 'actionSubscribe')
+          if (res) {
+            $('#accordion-checkbox-1').removeAttr('disabled')
+            WebEmarsysSdk.getLoggedInContact().then(function(res) {
+              if (res && Object.keys(res).length !== 0) {
+                $("#loginLogoutLabel").html('Login/Logout: Identified contact is logged in')
+                $("#loginInfo").html(`User <pre>${res.fieldValue} (field ID: ${res.fieldId})</pre> is logged in.`)
+                toggleNodesVisibility('.login-status', 'actionLogout' )
+              } else {
+                const anonIsAssigned = $('#anonIsLoggedId')
+                if (res && Object.keys(res).length === 0) {
+                  $("#loginLogoutLabel").html('Login/Logout: Anonymous contact is logged in')
+                  anonIsAssigned.html('Anonymous contact is logged in')
+                } else {
+                  $("#loginLogoutLabel").html('Login/Logout: NO contact is logged in')
+                  anonIsAssigned.html('No contact linked to device')
+                }
+                toggleNodesVisibility('.login-status', 'actionLogin' )
+              }
+            }).catch(function(err) {
+              console.error('Login status query error', err)
+            })
+          } else {
+            $('#accordion-checkbox-1').attr('disabled', true)
+          }
+        }).catch(function (err) {
+          console.error('Is subscribed error', err)
+        })
+        WebEmarsysSdk.getParams().then(function (params) {
+          const table = $('#deviceParams > tbody:last-child')
+          table.html('')
+          Object.keys(params).map(function(key) {
+            table.append(`<tr><td>${key}</td><td><pre>${JSON.stringify(params[key], null, 2) || ''}<pre></td></tr>`)
+          })
+        })
+      }
+      function toggleNodesVisibility(selector, id) {
+        $(selector).each(function() {
+          if ($(this).attr('id') === id) {
+            $(this).show()
+          } else {
+            $(this).hide()
+          }
+        })
+      }
+      function logout() {
+        WebEmarsysSdk.logout().then((success) => {
+          console.log('Logout result:', success)
+          checkSubscription();
+        }).catch(err => {
+          console.log('Error during logout', err)
+        })
+      }
+      function customEvent() {
+        console.log('Trying to send custom event...')
+        WebEmarsysSdk.customEvent('pippo1').then((success) => {
+          console.log('Sending custom event result:', success)
+          checkSubscription();
+        }).catch(err => {
+          console.error('Error during custom event sending', err)
+        })
+      }
+      $('#loginLogoutForm').submit(function(e) {
+        e.preventDefault();
+        const button = $('#loginButton')
+        const fieldId = $('input[name="contactFieldId"]')
+        const fieldValue = $('input[name="contactFieldValue"]')
+        const successNode = $('.success')
+        const errorNode = $('.error')
+        const contactInfo = { fieldId: Number(fieldId.val()), fieldValue: fieldValue.val() }
+        button.attr('disabled', true);
+        WebEmarsysSdk.login(contactInfo)
+          .then(function(success) {
+            if (success) {
+              fieldId.val('')
+              fieldValue.val('')
+              errorNode.html('')
+              successNode.html(`Data successfully submitted ${new Date()}`)
+            } else {
+              successNode.html('')
+              errorNode.html('Got some error on submit. Check console for details.')
+            }
+            checkSubscription();
+          })
+          .catch(function(err) {
+            successNode.html('')
+            console.error(err)
+            errorNode.html(`Got some error on submit: ${err.message}<br>Check console for details.`)
+          })
+          .then(function() {
+            button.removeAttr('disabled')
+          })
+      })
+  
+      console.log("test2",WebEmarsysSdk)
+
+  </script>
+  <script>
+
+      setTimeout(() => {
+console.log("test3",WebEmarsysSdk)
+      }, 1000)
+
+  </script>
+</div>
+</body>
+</html>
