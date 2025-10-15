@@ -3,7 +3,7 @@ function ComponentA() {
     name: "razak",
     age: 16,
   };
-  const url = "http://localhost:5000/api/v1/test/95?test=1234";
+  const url = "http://localhost:5000/api/v1/test/95?test=1234&12=razk";
   const jwt = "bshjsdhb11";
   const consumeData = async () => {
     try {
