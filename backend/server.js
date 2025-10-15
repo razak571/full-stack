@@ -2,9 +2,12 @@ import "dotenv/config";
 import express from "express";
 import { connectDB } from "./db/mongoDB.js";
 import userRouter from "./Routes/userRoute.js";
+import testRouter from "./Routes/testRoute.js";
 import cors from "cors";
 
-const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
+const PORT = 5000;
+
 const frontEndUrl = process.env.FRONTEND_URI;
 
 const app = express();
@@ -21,8 +24,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/test", testRouter);
 
 app.listen(PORT, async () => {
-  await connectDB();
+  // await connectDB();
   console.log(`Server started on port ${PORT}`);
 });
