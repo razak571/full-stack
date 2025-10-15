@@ -1,55 +1,31 @@
-import { useEffect, useState } from "react";
-
 function ComponentA() {
-  const [activate, setActivate] = useState(false);
-  const [btn, setBtn] = useState(false);
-  const [coolDown, setCoolDown] = useState(false);
-  const [count, setCount] = useState(12);
-
-  const dispencePaper = () => {
-    setActivate(true);
-    setCount(12);
+  const myData = {
+    name: "razak",
+    age: 16,
   };
-
-  useEffect(() => {
-    let clrItr;
-    if (activate === true) {
-      console.log("dispencing paper, plz wait....");
-      setBtn(true);
-      setTimeout(() => {
-        console.log("dispenced paper done");
-        setCoolDown(true);
-        clrItr = setInterval(() => {
-          setCount((prev) => Math.max(prev - 1, 1));
-        }, 1000);
-        setTimeout(() => {
-          setBtn(false);
-          setActivate(false);
-          setCoolDown(false);
-          // clrItr.clearInterval();
-          // setCount(20);
-        }, 12000); // cool down time with we can set
-      }, 8000); // time took too dispense papaer from machine
-
-      // return () => {
-      //   clrItr.setActivate()
-      // }
+  const url = "http://localhost:5000/api/v1/test/95?test=1234";
+  const jwt = "bshjsdhb11";
+  const consumeData = async () => {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(myData),
+        headers: {
+          "Content-Type": "application/json",
+          token: jwt,
+        },
+      });
+      if (!res.ok) throw new Error("Error Check :: res.ok not true");
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(`Error Hai : : ${error.message}`);
     }
-    if (activate === false) {
-      clearInterval(clrItr);
-    }
-  }, [activate]);
-
-  useEffect(() => {
-    console.log(`activate: ${activate} || btn:: ${btn} || count: ${count}`);
-  }, [activate, btn, count]);
-
+  };
   return (
     <>
-      <button disabled={btn} onClick={() => dispencePaper()}>
-        dispence
-      </button>{" "}
-      {coolDown && <span>wait: {count}</span>}
+      <h1>hi</h1>
+      <button onClick={() => consumeData()}>consume data</button>
     </>
   );
 }
