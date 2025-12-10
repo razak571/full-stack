@@ -1,31 +1,23 @@
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
 
 function ComponentA() {
-  const [count, setCount] = useState(0);
-  const [toggel, setToggel] = useState(false);
-  const expensiveCalculation = (num) => {
-    console.log("heavy computaional ran");
-    let result = 0;
-    for (let i = 0; i < 1e7; i++) {
-      result = result + i + num;
-    }
-    return result;
+  const countRef = useRef(0);
+  const [inc, setInc] = useState(1);
+  const handleConter = () => {
+    countRef.current = countRef.current + 1;
+    console.log(countRef.current);
   };
+  console.log("inc ::", inc);
+  console.log("counter ::", countRef.current);
 
-  const expensiveResult = useMemo(() => expensiveCalculation(count), [count]);
-
-  // const expensiveResult = expensiveCalculation(count);
-
-  console.log(toggel);
-  console.log(count);
   return (
     <>
-      <h1>memoizedValue: {expensiveResult}</h1>
-      <button onClick={() => setCount((prev) => prev + 1)}>
-        Count ++
-      </button>{" "}
+      <p>
+        counter = {countRef.current} || inc = {inc}{" "}
+      </p>
+      <button onClick={() => setInc((prev) => prev + 1)}>INC ++</button>
       <br></br>
-      <button onClick={() => setToggel((prev) => !prev)}>INC ++</button>
+      <button onClick={() => handleConter()}>counter ++</button>
     </>
   );
 }
