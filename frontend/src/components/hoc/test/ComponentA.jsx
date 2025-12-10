@@ -1,31 +1,31 @@
+import { useMemo, useState } from "react";
+
 function ComponentA() {
-  const myData = {
-    name: "razak",
-    age: 16,
-  };
-  const url = "http://localhost:5000/api/v1/test/95?test=1234&12=razk";
-  const jwt = "bshjsdhb11";
-  const consumeData = async () => {
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(myData),
-        headers: {
-          "Content-Type": "application/json",
-          token: jwt,
-        },
-      });
-      if (!res.ok) throw new Error("Error Check :: res.ok not true");
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(`Error Hai : : ${error.message}`);
+  const [count, setCount] = useState(0);
+  const [toggel, setToggel] = useState(false);
+  const expensiveCalculation = (num) => {
+    console.log("heavy computaional ran");
+    let result = 0;
+    for (let i = 0; i < 1e7; i++) {
+      result = result + i + num;
     }
+    return result;
   };
+
+  const expensiveResult = useMemo(() => expensiveCalculation(count), [count]);
+
+  // const expensiveResult = expensiveCalculation(count);
+
+  console.log(toggel);
+  console.log(count);
   return (
     <>
-      <h1>hi</h1>
-      <button onClick={() => consumeData()}>consume data</button>
+      <h1>memoizedValue: {expensiveResult}</h1>
+      <button onClick={() => setCount((prev) => prev + 1)}>
+        Count ++
+      </button>{" "}
+      <br></br>
+      <button onClick={() => setToggel((prev) => !prev)}>INC ++</button>
     </>
   );
 }
