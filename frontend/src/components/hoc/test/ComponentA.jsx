@@ -1,23 +1,27 @@
-import { useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import ComponentB from "./ComponentB";
 
 function ComponentA() {
-  const countRef = useRef(0);
-  const [inc, setInc] = useState(1);
-  const handleConter = () => {
-    countRef.current = countRef.current + 1;
-    console.log(countRef.current);
-  };
-  console.log("inc ::", inc);
-  console.log("counter ::", countRef.current);
+  const [count, setCount] = useState(0);
+  const [toggel, setToggel] = useState(false);
+
+  // const expensiveComputaion = () => {
+  //   console.log("expensive fun called");
+  // };
+
+  const expensiveComputaion = useCallback(() => {
+    console.log("expensive fun called");
+  }, [count]);
+
+  console.log(count);
+  console.log(toggel);
 
   return (
     <>
-      <p>
-        counter = {countRef.current} || inc = {inc}{" "}
-      </p>
-      <button onClick={() => setInc((prev) => prev + 1)}>INC ++</button>
+      <button onClick={() => setCount((prev) => prev + 1)}>count ++</button>{" "}
       <br></br>
-      <button onClick={() => handleConter()}>counter ++</button>
+      <button onClick={() => setToggel((prev) => !prev)}>toggel</button>
+      <ComponentB onClick={expensiveComputaion} />
     </>
   );
 }
