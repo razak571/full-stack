@@ -1,9 +1,3 @@
-// import { Link } from "react-router-dom";
-// import ReactHooks from "../components/ReactHooks/ReactHooks";
-// import UseCallBack from "../components/ReactHooks/UseCallBack";
-// import UseMemoHook from "../components/ReactHooks/UseMemoHook";
-// import ExpensiveCalculation from "../components/ReactHooks/UseMemoHook";
-// import UseReducer from "../components/ReactHooks/UseReducer";
 import PostList from "../components/hoc/components/PostList";
 import UserList from "../components/hoc/components/UserList";
 // import UseRefHook from "../components/ReactHooks/UseRefHook";
@@ -40,7 +34,12 @@ import ComponentB from "../components/hoc/test/ComponentB";
 //   "postList"
 // );
 
-const Home = () => {
+import { createContext, useState } from "react";
+export const TestContext = createContext();
+
+// eslint-disable-next-line react/prop-types
+const Home = ({ children }) => {
+  const [test, setTest] = useState("test value");
   return (
     // <div className=" flex justify-center gap-2 text-white">
     //   {/* <h1>welcome dude </h1>
@@ -60,6 +59,10 @@ const Home = () => {
 
     // </div>
     <div className="">
+      <TestContext.Provider value={{ test, setTest }}>
+        {children}
+        <ComponentA />
+      </TestContext.Provider>
       {/* <UsersWithFetching />
       <PostsWithFetching /> */}
       {/* <UsersWithRQFetching />
@@ -70,7 +73,7 @@ const Home = () => {
       {/* <TodoTest /> */}
       {/* <ComponentA /> */}
       {/* <UseReducer /> */}
-      <ComponentA />
+      {/* <hr></hr> */}
       {/* <ComponentB /> */}
     </div>
   );
